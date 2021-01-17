@@ -21,7 +21,8 @@ body {
 .card-cities-title,
 .cities,
 .C-Degrees,
-.F-Degrees {
+.F-Degrees,
+.open-source {
   font-family: "Baloo Chettan 2", cursive;
   color: #522d5b;
 }
@@ -135,4 +136,9 @@ body {
 
 .current-city-data-temperature {
   padding-top: 45px;
+}
+
+.open-source {
+  text-align: center;
+  font-weight: bold;
 }
