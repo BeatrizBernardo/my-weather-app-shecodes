@@ -1,0 +1,138 @@
+/*
+colors:
+#abedd8
+#46cdcf
+#0081c6
+#48466d
+*/
+
+body {
+  /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/
+  background-image: url("../images/6.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+.title,
+.current-city-name,
+.current-city-data,
+.next-days-data,
+.card-cities-title,
+.cities,
+.C-Degrees,
+.F-Degrees {
+  font-family: "Baloo Chettan 2", cursive;
+  color: #522d5b;
+}
+
+.title {
+  text-align: center;
+  color: #900c3f;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 60px;
+  font-weight: 400;
+}
+
+.search-form {
+  text-align: center;
+}
+
+.search-field {
+  display: inline-block;
+  width: 50%;
+  vertical-align: middle;
+}
+
+.search-button {
+  display: inline;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.fa-search {
+  color: #522d5b;
+  font-size: 20px;
+}
+
+.card-cities,
+.list-cities-item,
+.current-city-data,
+.next-day {
+  background-color: rgba(203, 186, 204, 0.6);
+}
+
+.card-cities-title {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0 auto;
+}
+
+.cities,
+.C-Degrees,
+.F-Degrees {
+  text-decoration: none;
+  transition: all 200ms ease-in-out;
+}
+
+.cities:hover,
+.C-Degrees:hover,
+.F-Degrees:hover,
+.cities:focus,
+.C-Degrees:focus,
+.F-Degrees:focus {
+  cursor: pointer;
+  color: #900c3f;
+}
+
+.list-group-item,
+.card-cities,
+.search-button,
+.search-field,
+.current-city-data,
+.next-day {
+  border: 1px solid #522d5b;
+  border-radius: 4px;
+}
+
+.current-city-name {
+  font-size: 60px;
+  line-height: 10px;
+}
+
+.current-city-data,
+.current-city-name,
+.next-days-data {
+  text-align: center;
+  font-weight: bold;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+
+.current-city-data {
+  font-size: 40px;
+}
+
+.next-day {
+  font-size: 20px;
+  padding: 30px 0 30px 0;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.current-city-data-image,
+.current-city-data-time {
+  padding: 0;
+}
+
+.current-city-data-time {
+  font-size: 20px;
+}
+
+.current-city-data-temperature {
+  padding-top: 45px;
+}

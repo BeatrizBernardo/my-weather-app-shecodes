@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/fbb575ec9f.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <img src="" alt="" />
+      <!-- Mudar as frases consuante o tempo -->
+      <h1 class="title">Let's see how warm is today!</h1>
+      <div class="row">
+        <!--left side-->
+        <div class="col-sm-8 left-column">
+          <form id="search-form">
+            <div class="group-form search-form">
+              <input
+                type="text"
+                placeholder="Type the city here"
+                class="form-control search-field"
+                id="search-field"
+              />
+              <button class="btn search-button" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+              <button
+                class="btn search-button"
+                type="button"
+                id="currentCityButton"
+              >
+                Current City
+              </button>
+            </div>
+          </form>
+
+          <div class="container">
+            <h3 class="current-city-name"></h3>
+            <div class="row current-city-data">
+              <div class="col-sm">
+                <span class="current-city-data-date"></span>
+                <br />
+                <span class="current-city-data-time"></span>
+              </div>
+              <div class="col-sm current-city-data-temperature">
+                <span class="degrees" id="degrees"></span>
+                <span id="units">
+                  º
+                  <a href="#" class="C-Degrees">C</a>
+                  |
+                  <a href="#" class="F-Degrees">F</a>
+                </span>
+              </div>
+              <div class="col-sm current-city-data-image"></div>
+            </div>
+          </div>
+
+          <div class="container">
+            <div class="row next-days-data">
+              <!--1 dia-->
+              <div class="col-sm next-day">
+                <div class="row row-cols-1">
+                  <div class="col day1-date">08/12</div>
+                  <div class="col">19ºC</div>
+                  <div class="col">🌤</div>
+                </div>
+              </div>
+              <!--2 dia-->
+              <div class="col-sm next-day">
+                <div class="row row-cols-1">
+                  <div class="col day2-date">09/12</div>
+                  <div class="col">18ºC</div>
+                  <div class="col">🌦</div>
+                </div>
+              </div>
+              <!--3 dia-->
+              <div class="col-sm next-day">
+                <div class="row row-cols-1">
+                  <div class="col day3-date">10/12</div>
+                  <div class="col">17ºC</div>
+                  <div class="col">🌨</div>
+                </div>
+              </div>
+              <!--4 dia-->
+              <div class="col-sm next-day">
+                <div class="row row-cols-1">
+                  <div class="col day4-date">11/12</div>
+                  <div class="col">19ºC</div>
+                  <div class="col">🌤</div>
+                </div>
+              </div>
+              <!--5 dia-->
+              <div class="col-sm next-day">
+                <div class="row row-cols-1">
+                  <div class="col day5-date">12/12</div>
+                  <div class="col">18ºC</div>
+                  <div class="col">☁</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--right side-->
+        <div class="col-sm-4 right-column">
+          <div class="card card-cities">
+            <h5 class="card-cities-title">See the weather in this cities</h5>
+            <ul class="list-group list-cities">
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">Lisbon</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">Madrid</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">Paris</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">Rome</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">London</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">Ankara</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">Cairo</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">Tokyo</a>
+              </li>
+              <li class="list-group-item list-cities-item">
+                <a class="cities" href="">New Delhi</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="src/index.js"></script>
+  </body>
+</html>
