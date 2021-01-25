@@ -26,7 +26,17 @@ function getRealTimeDate() {
   }
 
   let currentDate = document.querySelector(".current-city-data-date");
-  currentDate.innerHTML = `${day}/${month}/${year}`;
+  if (day < 10) {
+    currentDate.innerHTML = `0${day}/`;
+  } else {
+    currentDate.innerHTML = `${day}/`;
+  }
+
+  if (month < 10) {
+    currentDate.innerHTML += `0${month}/${year}`;
+  } else {
+    currentDate.innerHTML += `${month}/${year}`;
+  }
 
   let currentTime = document.querySelector(".current-city-data-time");
   if (minute < 10) {
@@ -34,43 +44,25 @@ function getRealTimeDate() {
   } else {
     currentTime.innerHTML = `${week[weekday]} ${hour}:${minute}`;
   }
-
-  calculateNextDaysDate();
 }
 
-function calculateNextDaysDate() {
-  let date = new Date();
-  let day1 = new Date();
-  let day2 = new Date();
-  let day3 = new Date();
-  let day4 = new Date();
-  let day5 = new Date();
+function calculateNextDaysDate(d) {
+  let date = new Date(d);
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
 
-  day1.setDate(date.getDate() + 1);
-  day2.setDate(date.getDate() + 2);
-  day3.setDate(date.getDate() + 3);
-  day4.setDate(date.getDate() + 4);
-  day5.setDate(date.getDate() + 5);
+  if (day < 10) {
+    day = `0${day}`;
+  } else {
+    day = `${day}`;
+  }
 
-  //change day 1
-  let day1Date = document.querySelector(".day1-date");
-  day1Date.innerHTML = `${day1.getDate()}/${day1.getMonth() + 1}`;
-
-  //change day 2
-  let day2Date = document.querySelector(".day2-date");
-  day2Date.innerHTML = `${day2.getDate()}/${day2.getMonth() + 1}`;
-
-  //change day 3
-  let day3Date = document.querySelector(".day3-date");
-  day3Date.innerHTML = `${day3.getDate()}/${day3.getMonth() + 1}`;
-
-  //change day 4
-  let day4Date = document.querySelector(".day4-date");
-  day4Date.innerHTML = `${day4.getDate()}/${day4.getMonth() + 1}`;
-
-  //change day 5
-  let day5Date = document.querySelector(".day5-date");
-  day5Date.innerHTML = `${day5.getDate()}/${day5.getMonth() + 1}`;
+  if (month < 10) {
+    month = `0${month}`;
+  } else {
+    month = `${month}`;
+  }
+  return `${day}/${month}`;
 }
 
 function convertToCelsiusDegree(event) {
@@ -118,10 +110,7 @@ function getSearchCity(response) {
 
   let clouds = response.data.weather[0].description;
   let imageTemp = document.querySelector(".current-city-data-image");
-  console.log(imageTemp);
   imageTemp.innerHTML = `<img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png" style="max-width: 30%;" alt="${clouds}"> <br> <span style="font-size: 20px">${clouds}</span>`;
-
-  console.log(response);
 }
 
 //cities from the list
@@ -139,6 +128,29 @@ function searchCityByButton(event) {
   changeCityElements(newCity.value);
 }
 
+function showForecast(response) {
+  let forecastElement = document.querySelector(".next-days-data");
+  forecastElement.innerHTML = null;
+  for (let index = 0; index < 40; index++) {
+    let date = response.data.list[index].dt * 1000;
+    let temp = Math.round(response.data.list[index].main.temp);
+    let image = response.data.list[index].weather[0].icon;
+    let imageDescription = response.data.list[index].weather[0].description;
+
+    forecastElement.innerHTML += `
+    <div class="col-sm next-day">
+      <div class="row row-cols-1">
+        <div class="col">${calculateNextDaysDate(date)}</div>
+        <div class="col">${temp}ºC</div>
+        <div class="col">
+          <img src="http://openweathermap.org/img/wn/${image}@2x.png" style="max-width: 20%;" alt="${imageDescription}">
+        </div>
+      </div>
+    </div>`;
+    index += 8;
+  }
+}
+
 //start with a defined city
 function changeCityElements(newCity) {
   let currentCityName = document.querySelector(".current-city-name");
@@ -150,7 +162,7 @@ function changeCityElements(newCity) {
   axios.get(apiURL).then(getSearchCity);
 
   let forecastURL = `${apiEndpointForecast}?appid=${apiKey}&q=${newCity}&units=${unit}`;
-  console.log(forecastURL);
+  axios.get(forecastURL).then(showForecast);
 }
 
 //current city by button
@@ -169,6 +181,8 @@ function showCurrentCityData(event) {
       d.innerHTML = `${degrees}`;
       let currentCityName = document.querySelector(".current-city-name");
       currentCityName.innerHTML = `${response.data.name}`;
+      let forecastURL = `${apiEndpointForecast}?appid=${apiKey}&units=${unit}&lat=${latitude}&lon=${longitude}`;
+      axios.get(forecastURL).then(showForecast);
     });
   });
 }
@@ -192,7 +206,7 @@ currenyCityButton.addEventListener("click", showCurrentCityData);
 
 let apiKey = "8e6bcc493a1dde09d842b31c9a0c6dba";
 let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
-let apiEndpointForecast = "api.openweathermap.org/data/2.5/forecast";
+let apiEndpointForecast = "https://api.openweathermap.org/data/2.5/forecast";
 
 let imagesURL = "images/";
 
