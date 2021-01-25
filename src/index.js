@@ -110,21 +110,6 @@ function toStringCurrentUnit(currentUnit) {
   return unit;
 }
 
-/* function changeCityName(newCity) {
-  //change the name on html
-  let currentCityName = document.querySelector(".current-city-name");
-
-  //if the data came from cities list
-  if (newCity !== undefined) {
-    console.log("diferente de undef " + newCity);
-    currentCityName.innerHTML = `${newCity}`;
-    //if the data came from an element
-  } else {
-    console.log("diferente " + newCity.value);
-    currentCityName.innerHTML = `${newCity.value}`;
-  }
-} */
-
 //update the html element with the data
 function getSearchCity(response) {
   let degrees = Math.round(response.data.main.temp);
@@ -134,47 +119,28 @@ function getSearchCity(response) {
   let clouds = response.data.weather[0].description;
   let imageTemp = document.querySelector(".current-city-data-image");
   console.log(imageTemp);
-  imageTemp.innerHTML = `<img src="images/${clouds}.png" style="max-width: 30%;" alt=""> <br> <span style="font-size: 20px">${clouds}</span>`;
+  imageTemp.innerHTML = `<img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png" style="max-width: 30%;" alt="${clouds}"> <br> <span style="font-size: 20px">${clouds}</span>`;
 
-  console.log(imageTemp);
+  console.log(response);
 }
 
 //cities from the list
 function citiesList(event) {
   event.preventDefault();
   let newCity = event.target.innerHTML;
-
-  let currentCityName = document.querySelector(".current-city-name");
-  currentCityName.innerHTML = `${newCity}`;
-
-  let unit = toStringCurrentUnit(currentUnit);
-
-  let apiURL = `${apiEndpoint}?appid=${apiKey}&q=${newCity}&units=${unit}`;
-  axios.get(apiURL).then(getSearchCity);
+  changeCityElements(newCity);
 }
 
-//cities from the search bar
+//Search city from the bar
 function searchCityByButton(event) {
   event.preventDefault();
-
   //get the new name
   let newCity = document.querySelector("#search-field");
-  let currentCityName = document.querySelector(".current-city-name");
-  currentCityName.innerHTML = `${newCity.value}`;
-
-  let unit = toStringCurrentUnit(currentUnit);
-
-  let apiURL = `${apiEndpoint}?appid=${apiKey}&q=${newCity.value}&units=${unit}`;
-  axios.get(apiURL).then(getSearchCity);
-
-  //let forecastURL = `${apiEndpointForecast}?cnt=5&appid=${apiKey}&q=${newCity.value}&units=${unit}`;
-  //console.log(forecastURL);
+  changeCityElements(newCity.value);
 }
 
 //start with a defined city
-function definedCity() {
-  //get the new name
-  let newCity = "Lisbon";
+function changeCityElements(newCity) {
   let currentCityName = document.querySelector(".current-city-name");
   currentCityName.innerHTML = `${newCity}`;
 
@@ -183,8 +149,8 @@ function definedCity() {
   let apiURL = `${apiEndpoint}?appid=${apiKey}&q=${newCity}&units=${unit}`;
   axios.get(apiURL).then(getSearchCity);
 
-  //let forecastURL = `${apiEndpointForecast}?cnt=5&appid=${apiKey}&q=${newCity.value}&units=${unit}`;
-  //console.log(forecastURL);
+  let forecastURL = `${apiEndpointForecast}?appid=${apiKey}&q=${newCity}&units=${unit}`;
+  console.log(forecastURL);
 }
 
 //current city by button
@@ -226,10 +192,9 @@ currenyCityButton.addEventListener("click", showCurrentCityData);
 
 let apiKey = "8e6bcc493a1dde09d842b31c9a0c6dba";
 let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
-let apiEndpointForecast =
-  "https://api.openweathermap.org/data/2.5/forecast/daily";
+let apiEndpointForecast = "api.openweathermap.org/data/2.5/forecast";
 
 let imagesURL = "images/";
 
 getRealTimeDate();
-definedCity();
+changeCityElements("Lisbon");
