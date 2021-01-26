@@ -125,8 +125,7 @@ body {
   margin-right: 10px;
 }
 
-.current-city-data-image,
-.current-city-data-time {
+.current-city-data-image {
   padding: 0;
 }
 
@@ -134,7 +133,18 @@ body {
   font-size: 20px;
 }
 
-.current-city-data-temperature {
+#current-city-data-image,
+#current-city-data-image-description,
+#current-city-data-image-speed,
+#current-city-data-image-humidity,
+#current-city-data-date {
+  display: block;
+  font-size: 20px;
+}
+
+.current-city-data-temperature,
+.current-city-data-d {
+  display: block;
   padding-top: 45px;
 }
 

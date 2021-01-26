@@ -104,13 +104,26 @@ function toStringCurrentUnit(currentUnit) {
 
 //update the html element with the data
 function getSearchCity(response) {
+  console.log(response);
   let degrees = Math.round(response.data.main.temp);
   let d = document.querySelector("#degrees");
   d.innerHTML = `${degrees}`;
 
   let clouds = response.data.weather[0].description;
-  let imageTemp = document.querySelector(".current-city-data-image");
-  imageTemp.innerHTML = `<img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png" style="max-width: 30%;" alt="${clouds}"> <br> <span style="font-size: 20px">${clouds}</span>`;
+  let imageTemp = document.querySelector("#current-city-data-image");
+  imageTemp.innerHTML = `<img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png" style="max-width: 30%;" alt="${clouds}">`;
+  let imageTempDesc = document.querySelector(
+    "#current-city-data-image-description"
+  );
+  imageTempDesc.innerHTML = `${clouds}`;
+  let imageTempSpeed = document.querySelector("#current-city-data-image-speed");
+  imageTempSpeed.innerHTML = `Wind: ${Math.round(response.data.wind.speed)}%`;
+  let imageTempHumidity = document.querySelector(
+    "#current-city-data-image-humidity"
+  );
+  imageTempHumidity.innerHTML = `Humidity: ${Math.round(
+    response.data.main.humidity
+  )}%`;
 }
 
 //cities from the list
@@ -136,7 +149,8 @@ function showForecast(response) {
     let temp = Math.round(response.data.list[index].main.temp);
     let image = response.data.list[index].weather[0].icon;
     let imageDescription = response.data.list[index].weather[0].description;
-
+    console.log(response);
+    console.log(calculateNextDaysDate(date));
     forecastElement.innerHTML += `
     <div class="col-sm next-day">
       <div class="row row-cols-1">
