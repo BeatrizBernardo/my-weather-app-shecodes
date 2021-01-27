@@ -104,7 +104,6 @@ function toStringCurrentUnit(currentUnit) {
 
 //update the html element with the data
 function getSearchCity(response) {
-  console.log(response);
   let degrees = Math.round(response.data.main.temp);
   let d = document.querySelector("#degrees");
   d.innerHTML = `${degrees}`;
@@ -117,7 +116,9 @@ function getSearchCity(response) {
   );
   imageTempDesc.innerHTML = `${clouds}`;
   let imageTempSpeed = document.querySelector("#current-city-data-image-speed");
-  imageTempSpeed.innerHTML = `Wind: ${Math.round(response.data.wind.speed)}%`;
+  imageTempSpeed.innerHTML = `Wind: ${Math.round(
+    response.data.wind.speed
+  )}km/h`;
   let imageTempHumidity = document.querySelector(
     "#current-city-data-image-humidity"
   );
@@ -149,8 +150,6 @@ function showForecast(response) {
     let temp = Math.round(response.data.list[index].main.temp);
     let image = response.data.list[index].weather[0].icon;
     let imageDescription = response.data.list[index].weather[0].description;
-    console.log(response);
-    console.log(calculateNextDaysDate(date));
     forecastElement.innerHTML += `
     <div class="col-sm next-day">
       <div class="row row-cols-1">
@@ -175,7 +174,7 @@ function changeCityElements(newCity) {
   let apiURL = `${apiEndpoint}?appid=${apiKey}&q=${newCity}&units=${unit}`;
   axios.get(apiURL).then(getSearchCity);
 
-  let forecastURL = `${apiEndpointForecast}?appid=${apiKey}&q=${newCity}&units=${unit}`;
+  let forecastURL = `${apiEndpointForecast}?appid=${apiKey}&q=${newCity}&units=metric`;
   axios.get(forecastURL).then(showForecast);
 }
 
