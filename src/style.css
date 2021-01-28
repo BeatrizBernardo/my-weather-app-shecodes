@@ -8,7 +8,7 @@ colors:
 
 body {
   /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/
-  background-image: url("../images/6.jpg");
+  /*background-image: url("../images/6.jpg");*/
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
@@ -61,7 +61,7 @@ body {
 .list-cities-item,
 .current-city-data,
 .next-day {
-  background-color: rgba(203, 186, 204, 0.6);
+  background-color: rgba(203, 186, 204, 0.9);
 }
 
 .card-cities-title {

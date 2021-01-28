@@ -177,6 +177,7 @@ function showForecast(response) {
 
 //receive the city to search the weather
 function changeCityElements(newCity) {
+  changeBackgroundImage();
   let currentCityName = document.querySelector(".current-city-name");
   currentCityName.innerHTML = `${newCity}`;
 
@@ -192,7 +193,10 @@ function changeCityElements(newCity) {
 //current city by button
 function showCurrentCityData(event) {
   event.preventDefault();
+
   navigator.geolocation.getCurrentPosition(function (position) {
+    changeBackgroundImage();
+
     let latitude = position.coords.latitude;
     let longitude = position.coords.longitude;
 
@@ -209,6 +213,20 @@ function showCurrentCityData(event) {
       axios.get(forecastURL).then(showForecast);
     });
   });
+}
+
+//function from Math.random MDN
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
+//set background image by random number
+function changeBackgroundImage() {
+  let number = getRandomIntInclusive(1, 20);
+  console.log(number);
+  document.body.style.backgroundImage = `url('images/${number}.jpg')`;
 }
 
 //MAIN
