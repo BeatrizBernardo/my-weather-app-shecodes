@@ -2,11 +2,29 @@
 var currentUnit = 0; //0 - celsius 1 - fahrenheit
 
 //FUNCTIONS
-function getRealTimeDate() {
+function getRealDate() {
   let date = new Date();
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
+
+  if (day < 10) {
+    day = `0${day}`;
+  } else {
+    day = `${day}`;
+  }
+
+  if (month < 10) {
+    month = `0${month}`;
+  } else {
+    month = `${month}`;
+  }
+
+  return `${day}/${month}/${year}`;
+}
+
+function getRealTime() {
+  let date = new Date();
   let hour = date.getHours();
   let minute = date.getMinutes();
   let weekday = date.getDay();
@@ -20,30 +38,18 @@ function getRealTimeDate() {
     "Saturday",
   ];
 
-  //if the value returns 0, equality to January (1)
-  if (month === 0) {
-    month = 1;
-  }
-
-  let currentDate = document.querySelector(".current-city-data-date");
-  if (day < 10) {
-    currentDate.innerHTML = `0${day}/`;
-  } else {
-    currentDate.innerHTML = `${day}/`;
-  }
-
-  if (month < 10) {
-    currentDate.innerHTML += `0${month}/${year}`;
-  } else {
-    currentDate.innerHTML += `${month}/${year}`;
-  }
-
-  let currentTime = document.querySelector(".current-city-data-time");
   if (minute < 10) {
-    currentTime.innerHTML = `${week[weekday]} ${hour}:0${minute}`;
+    minute = `0${minute}`;
   } else {
-    currentTime.innerHTML = `${week[weekday]} ${hour}:${minute}`;
+    minute = `${minute}`;
   }
+  if (hour < 10) {
+    hour = `0${hour}`;
+  } else {
+    hour = `${hour}`;
+  }
+
+  return `${week[weekday]} ${hour}:${minute}`;
 }
 
 function calculateNextDaysDate(d) {
@@ -104,6 +110,11 @@ function toStringCurrentUnit(currentUnit) {
 
 //update the html element with the data
 function getSearchCity(response) {
+  let currentDate = document.querySelector(".current-city-data-date");
+  currentDate.innerHTML = getRealDate();
+  let currentTime = document.querySelector(".current-city-data-time");
+  currentTime.innerHTML = getRealTime();
+
   let degrees = Math.round(response.data.main.temp);
   let d = document.querySelector("#degrees");
   d.innerHTML = `${degrees}`;
@@ -156,7 +167,7 @@ function showForecast(response) {
         <div class="col">${calculateNextDaysDate(date)}</div>
         <div class="col">${temp}ºC</div>
         <div class="col">
-          <img src="http://openweathermap.org/img/wn/${image}@2x.png" style="max-width: 20%;" alt="${imageDescription}">
+          <img src="http://openweathermap.org/img/wn/${image}@2x.png" style="max-width: 35%;" alt="${imageDescription}">
         </div>
       </div>
     </div>`;
@@ -164,7 +175,7 @@ function showForecast(response) {
   }
 }
 
-//start with a defined city
+//receive the city to search the weather
 function changeCityElements(newCity) {
   let currentCityName = document.querySelector(".current-city-name");
   currentCityName.innerHTML = `${newCity}`;
@@ -223,5 +234,4 @@ let apiEndpointForecast = "https://api.openweathermap.org/data/2.5/forecast";
 
 let imagesURL = "images/";
 
-getRealTimeDate();
 changeCityElements("Lisbon");
