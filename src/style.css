@@ -130,6 +130,7 @@ body {
 }
 
 .current-city-data-time {
+  display: block;
   font-size: 20px;
 }
 
