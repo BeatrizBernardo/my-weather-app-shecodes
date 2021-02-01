@@ -143,6 +143,10 @@ body {
   font-size: 20px;
 }
 
+#current-city-data-image-description {
+  color: #900c3f;
+}
+
 .current-city-data-temperature,
 .current-city-data-d {
   display: block;

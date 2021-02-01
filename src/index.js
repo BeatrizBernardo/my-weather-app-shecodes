@@ -8,31 +8,21 @@ var unit;
 var newCity = `Lisbon`;
 
 //FUNCTIONS
-function getRealDate() {
-  let date = new Date();
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
+
+//receive a date, return in formate of dd/mm/yyyy
+function getCompleteDate(d) {
+  d = d * 1000;
+  let date = new Date(d);
   let year = date.getFullYear();
 
-  if (day < 10) {
-    day = `0${day}`;
-  } else {
-    day = `${day}`;
-  }
-
-  if (month < 10) {
-    month = `0${month}`;
-  } else {
-    month = `${month}`;
-  }
-
-  return `${day}/${month}/${year}`;
+  let days = getDayMonth(d);
+  return `${days}/${year}`;
 }
 
-function getRealTime() {
-  let date = new Date();
-  let hour = date.getHours();
-  let minute = date.getMinutes();
+//receive a date, return in formate of Weekday hh:mm
+function getCompleteTime(d) {
+  d = d * 1000;
+  let date = new Date(d);
   let weekday = date.getDay();
   let week = [
     "Sunday",
@@ -43,23 +33,19 @@ function getRealTime() {
     "Friday",
     "Saturday",
   ];
-
-  if (minute < 10) {
-    minute = `0${minute}`;
-  } else {
-    minute = `${minute}`;
-  }
-  if (hour < 10) {
-    hour = `0${hour}`;
-  } else {
-    hour = `${hour}`;
-  }
-
-  return `${week[weekday]} ${hour}:${minute}`;
+  let time = getHoursMinutes(d, 1);
+  return `${week[weekday]} ${time}`;
 }
 
-function calculateNextHours(d) {
-  let date = new Date(d);
+//receive a date, return in hh:mm
+function getHoursMinutes(d, forecast) {
+  let date;
+  if (forecast === 0) {
+    date = new Date(d);
+  } else {
+    //display the right current time
+    date = new Date();
+  }
   let hour = date.getHours();
   let minute = date.getMinutes();
 
@@ -77,7 +63,8 @@ function calculateNextHours(d) {
   return `${hour}:${minute}`;
 }
 
-function calculateNextDaysDate(d) {
+//receive a date, return in dd/mm
+function getDayMonth(d) {
   let date = new Date(d);
   let day = date.getDate();
   let month = date.getMonth() + 1;
@@ -133,38 +120,6 @@ function toStringCurrentUnit(currentUnit) {
   return unit;
 }
 
-//update the html element with the data
-function getSearchCity(response) {
-  let currentDate = document.querySelector(".current-city-data-date");
-  currentDate.innerHTML = getRealDate();
-  let currentTime = document.querySelector(".current-city-data-time");
-  currentTime.innerHTML = getRealTime();
-
-  let degrees = Math.round(response.data.main.temp);
-  let d = document.querySelector("#degrees");
-  d.innerHTML = `${degrees}`;
-
-  changeBackgroundImage(degrees);
-
-  let clouds = response.data.weather[0].description;
-  let imageTemp = document.querySelector("#current-city-data-image");
-  imageTemp.innerHTML = `<img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png" style="max-width: 30%;" alt="${clouds}">`;
-  let imageTempDesc = document.querySelector(
-    "#current-city-data-image-description"
-  );
-  imageTempDesc.innerHTML = `${clouds}`;
-  let imageTempSpeed = document.querySelector("#current-city-data-image-speed");
-  imageTempSpeed.innerHTML = `Wind: ${Math.round(
-    response.data.wind.speed
-  )}km/h`;
-  let imageTempHumidity = document.querySelector(
-    "#current-city-data-image-humidity"
-  );
-  imageTempHumidity.innerHTML = `Humidity: ${Math.round(
-    response.data.main.humidity
-  )}%`;
-}
-
 //cities from the list
 function citiesList(event) {
   event.preventDefault();
@@ -185,14 +140,14 @@ function showForecastDays(response) {
   let forecastElement = document.querySelector(".next-days-data");
   forecastElement.innerHTML = null;
   for (let index = 0; index < 40; index++) {
-    let date = response.data.list[index].dt * 1000;
+    let date = response.data.list[index].dt;
     let temp = Math.round(response.data.list[index].main.temp);
     let image = response.data.list[index].weather[0].icon;
     let imageDescription = response.data.list[index].weather[0].description;
     forecastElement.innerHTML += `
     <div class="col-sm next-day">
       <div class="row row-cols-1">
-        <div class="col">${calculateNextDaysDate(date)}</div>
+        <div class="col">${getDayMonth(date * 1000)}</div>
         <div class="col">${temp}ºC</div>
         <div class="col">
           <img src="http://openweathermap.org/img/wn/${image}@2x.png" style="max-width: 35%;" alt="${imageDescription}">
@@ -208,14 +163,14 @@ function showForecastHour(response) {
   let forecastElement = document.querySelector(".next-days-data");
   forecastElement.innerHTML = null;
   for (let index = 0; index < 5; index++) {
-    let date = response.data.list[index].dt * 1000;
+    let date = response.data.list[index].dt;
     let temp = Math.round(response.data.list[index].main.temp);
     let image = response.data.list[index].weather[0].icon;
     let imageDescription = response.data.list[index].weather[0].description;
     forecastElement.innerHTML += `
     <div class="col-sm next-day">
       <div class="row row-cols-1">
-        <div class="col">${calculateNextHours(date)}</div>
+        <div class="col">${getHoursMinutes(date * 1000, 0)}</div>
         <div class="col">${temp}ºC</div>
         <div class="col">
           <img src="http://openweathermap.org/img/wn/${image}@2x.png" style="max-width: 35%;" alt="${imageDescription}">
@@ -240,6 +195,41 @@ function changeCityElements(newCity) {
   axios.get(forecastURL).then(showForecastDays);
 }
 
+//update the html element with the data
+function getSearchCity(response) {
+  let currentDate = document.querySelector(".current-city-data-date");
+  currentDate.innerHTML = getCompleteDate(response.data.dt);
+  let currentTime = document.querySelector(".current-city-data-time");
+  currentTime.innerHTML = getCompleteTime(response.data.dt);
+
+  let degrees = Math.round(response.data.main.temp);
+  let d = document.querySelector("#degrees");
+  d.innerHTML = `${degrees}`;
+
+  changeBackgroundImage(degrees);
+
+  let clouds = response.data.weather[0].description;
+  let imageTemp = document.querySelector("#current-city-data-image");
+  imageTemp.innerHTML = `<img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png" style="max-width: 30%;" alt="${clouds}">`;
+
+  let imageTempDesc = document.querySelector(
+    "#current-city-data-image-description"
+  );
+  imageTempDesc.innerHTML = `${clouds}`;
+
+  let imageTempSpeed = document.querySelector("#current-city-data-image-speed");
+  imageTempSpeed.innerHTML = `Wind: ${Math.round(
+    response.data.wind.speed
+  )}km/h`;
+
+  let imageTempHumidity = document.querySelector(
+    "#current-city-data-image-humidity"
+  );
+  imageTempHumidity.innerHTML = `Humidity: ${Math.round(
+    response.data.main.humidity
+  )}%`;
+}
+
 //current city by button
 function showCurrentCityData(event) {
   event.preventDefault();
@@ -256,6 +246,7 @@ function showCurrentCityData(event) {
       let degrees = Math.round(response.data.main.temp);
       let d = document.querySelector("#degrees");
       d.innerHTML = `${degrees}`;
+
       changeBackgroundImage(degrees);
 
       let currentCityName = document.querySelector(".current-city-name");
@@ -308,19 +299,16 @@ function getRandomIntInclusive(min, max) {
 //set background image by random number by degrees temp
 function changeBackgroundImage(degrees) {
   let number;
-  let titleElement;
+  let titleElement = document.querySelector(".title");
   //if temperatura is below or equal to 20C change header sentece and image
   if (degrees <= 20) {
     number = getRandomIntInclusive(1, 10);
-    document.body.style.backgroundImage = `url('images/${number}.jpg')`;
-    titleElement = document.querySelector(".title");
     titleElement.innerHTML = `It's cold outside, baby!`;
   } else {
     number = getRandomIntInclusive(11, 20);
-    document.body.style.backgroundImage = `url('images/${number}.jpg')`;
-    titleElement = document.querySelector(".title");
     titleElement.innerHTML = `Let's see how warm is today!`;
   }
+  document.body.style.backgroundImage = `url('images/${number}.jpg')`;
 }
 
 //MAIN
