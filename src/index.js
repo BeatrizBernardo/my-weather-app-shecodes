@@ -331,7 +331,7 @@ currenyCityButton.addEventListener("click", showCurrentCityData);
 let forecastButton = document.querySelector("#forecastButton");
 forecastButton.addEventListener("click", changeForecastButton);
 
-let apiKey = "8e6bcc493a1dde09d842b31c9a0c6dba";
+let apiKey = "7ec05f26b77b01d3642a971e0b2d2553";
 let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
 let apiEndpointForecast = "https://api.openweathermap.org/data/2.5/forecast";
 
